@@ -4,7 +4,5 @@ const serviceAccount = require("./config.json");
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
-  
-const db = admin.firestore();
 
-export default admin.firestore();
+export default admin.firestore;
