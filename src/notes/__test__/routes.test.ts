@@ -1,9 +1,23 @@
 import request from 'supertest';
 import { faker } from '@faker-js/faker';
-import { INoteDTO} from 'types';
-import { vi, describe, test, expect, beforeAll, afterEach, SpyInstance } from "vitest";
+import { vi, describe, test, expect, beforeAll } from "vitest";
 
 describe('note routes', () => {
+    beforeAll(()=> {
+        vi.mock("@notes/infrastructure/firebase.adapter", () => {
+            const FirebaseRepository = vi.fn(() => ({
+                setNote: vi.fn(),
+                updateNote: vi.fn(),
+                deleteNote: vi.fn(),
+                getNotes: vi.fn(),
+                getNote: vi.fn(),
+            }));
+            return {
+                default : FirebaseRepository
+            };
+        });
+    })
+
     test('getNotes should return a 200 status code', async () => {
         const response = await request('http://localhost:5000/api/notes')
         .get('/');
